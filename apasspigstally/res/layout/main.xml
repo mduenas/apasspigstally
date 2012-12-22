@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<TableLayout 
+	android:id="@+id/TableLayout01" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content" android:stretchColumns="0,1">
+<TableRow android:id="@+id/TableRow01" android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<Button 
+			android:text="Sider" 
+			android:id="@+id/buttonSider" 
+			android:layout_height="fill_parent" 
+			android:layout_width="100px" />
+		<Button 
+			android:text="Sider dot" 
+			android:id="@+id/buttonSiderDot" 
+			android:layout_height="fill_parent"
+			android:layout_width="100px" />
+	</TableRow>
+	<TableRow android:id="@+id/TableRow02" android:layout_width="fill_parent" android:layout_height="wrap_content">	
+		<Button 
+			android:text="Trotter" 
+			android:id="@+id/buttonTrotter" 
+			android:layout_height="fill_parent" 
+			android:layout_width="100px" />
+		<Button 
+			android:text="Razorback" 
+			android:id="@+id/buttonRazorback" 
+			android:layout_height="fill_parent" 
+			android:layout_width="100px" />
+	</TableRow>	
+	<TableRow android:id="@+id/TableRow03" android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<Button 
+			android:text="Snouter" 
+			android:id="@+id/buttonSnouter" 
+			android:layout_height="fill_parent" 
+			android:layout_width="100px"/>
+		<Button 
+			android:text="Leaning Jowler" 
+			android:id="@+id/buttonLeaningJowler" 
+			android:layout_height="fill_parent"
+			android:layout_width="100px"/>
+	</TableRow>
+	<TableRow android:id="@+id/TableRow04" android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<TextView 
+			android:text="Pig 1: " 
+			android:id="@+id/tvPig1Label" 
+			android:layout_width="100px" 
+			android:layout_height="wrap_content" 
+			android:typeface="serif" 
+			android:textSize="18px"></TextView>
+		<TextView 
+			android:text="Pig 2: " 
+			android:id="@+id/tvPig2Label" 
+			android:layout_width="100px" 
+			android:layout_height="wrap_content" 
+			android:typeface="serif" 
+			android:textSize="18px"></TextView>
+	</TableRow>	
+	<TableRow android:id="@+id/TableRow07" android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<Button 
+			android:layout_column="0" 
+			android:layout_span="2"  		
+			android:text="Bank It" 
+			android:id="@+id/buttonBankIt" 
+			android:layout_height="fill_parent" 
+			android:layout_width="fill_parent"/>
+	</TableRow>
+	<TableRow android:id="@+id/TableRow08" android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<Button 
+			android:layout_column="0" 
+			android:layout_span="2"  		
+			android:text="Total Loss (Pigs touching)" 
+			android:id="@+id/buttonTotalLoss" 
+			android:layout_height="fill_parent" 
+			android:layout_width="fill_parent"/>
+	</TableRow>
+	<TableRow android:id="@+id/TableRow06" android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<TextView 
+			android:layout_column="0" 
+			android:layout_span="2"  
+			android:text="Score thus far: " 
+			android:id="@+id/tvScoreThusfarLabel" 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content" 
+			android:typeface="serif" android:textSize="30px"></TextView>
+	</TableRow>		
+	<TableRow android:id="@+id/TableRow09" android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<TextView 
+			android:layout_column="0" 
+			android:layout_span="2"  		
+			android:text="Bank Score: " 
+			android:id="@+id/tvScore" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:typeface="serif" 
+			android:textSize="30px"/>
+	</TableRow>		
+</TableLayout>
+</LinearLayout>
