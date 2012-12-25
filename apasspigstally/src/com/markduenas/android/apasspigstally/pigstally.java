@@ -2,7 +2,8 @@ package com.markduenas.android.apasspigstally;
 
 import java.io.Serializable;
 
-public class pigstally implements Serializable {
+public class pigstally implements Serializable
+{
 	/**
 	 * 
 	 */
@@ -13,66 +14,93 @@ public class pigstally implements Serializable {
 	private String firstRollString;
 	private String secondRollString;
 	private boolean pigout;
-	public boolean isPigout(){
+
+	public boolean isPigout()
+	{
 		return pigout;
 	}
-	public String getFirstRoll() {
+
+	public String getFirstRoll()
+	{
 		return firstRollString;
 	}
-	public String getSecondRoll() {
+
+	public String getSecondRoll()
+	{
 		return secondRollString;
 	}
-	public int getTempScore() {
+
+	public int getTempScore()
+	{
 		return tempScore;
 	}
-	public int getBankScore() {
+
+	public int getBankScore()
+	{
 		return bankScore;
 	}
-	public boolean roll(String msg) {
+
+	public boolean roll(String msg)
+	{
 		pigout = false;
 		String currentRoll = msg.trim();
-		if(!currentRoll.equals("Bank It") && !currentRoll.equals("Total Loss (Pigs touching)")) {
+		if (!currentRoll.equals("Bank It") && !currentRoll.equals("Total Loss (Pigs touching)"))
+		{
 			int roll = 0;
-			if(currentRoll.contentEquals("Sider")) {
-				roll = 1;
-			} 
-			if(currentRoll.contentEquals("Sider dot")) {
+			if (currentRoll.contentEquals("Sider"))
+			{
 				roll = 1;
 			}
-			if(currentRoll.contentEquals("Trotter")) {
+			if (currentRoll.contentEquals("Sider dot"))
+			{
+				roll = 1;
+			}
+			if (currentRoll.contentEquals("Trotter"))
+			{
 				roll = 5;
 			}
-			if(currentRoll.contentEquals("Razorback")) {
+			if (currentRoll.contentEquals("Razorback"))
+			{
 				roll = 5;
 			}
-			if(currentRoll.contentEquals("Snouter")) {
+			if (currentRoll.contentEquals("Snouter"))
+			{
 				roll = 10;
 			}
-			if(currentRoll.contentEquals("Leaning Jowler")) {
+			if (currentRoll.contentEquals("Leaning Jowler"))
+			{
 				roll = 15;
 			}
-			if(firstRoll > 0) {
+			if (firstRoll > 0)
+			{
 				// This is the second roll
-				if(firstRoll == 1) {
+				if (firstRoll == 1)
+				{
 					// need to check for "pig out"
-					if (firstRollString.equals(currentRoll)) {
+					if (firstRollString.equals(currentRoll))
+					{
 						// for a double sider we only give 1 point
 						tempScore = tempScore + firstRoll;
 						// set pig2 roll
 						secondRollString = currentRoll;
 						// reset first roll
 						firstRoll = 0;
-					} else {
-						if(currentRoll.contains("Sider")) {
+					}
+					else
+					{
+						if (currentRoll.contains("Sider"))
+						{
 							// pig out (no score added to total)
 							tempScore = 0;
 							firstRoll = 0;
 							// reset Pig1 Roll
 							firstRollString = "ready";
-							// reset Pig2 Roll							
+							// reset Pig2 Roll
 							secondRollString = "ready";
 							pigout = true;
-						} else {
+						}
+						else
+						{
 							// for any roll combination with a sider
 							// only the non-sider roll is counted (i.e. Trotter + Sider = Trotter (5))
 							tempScore = tempScore + roll;
@@ -82,27 +110,37 @@ public class pigstally implements Serializable {
 							firstRoll = 0;
 						}
 					}
-				} else {
+				}
+				else
+				{
 					// add additional points for doubles
-					if(firstRollString.equals(currentRoll)) {
-						if(currentRoll.equals("Trotter")) {
+					if (firstRollString.equals(currentRoll))
+					{
+						if (currentRoll.equals("Trotter"))
+						{
 							roll = roll + 10;
 						}
-						if(currentRoll.equals("Razorback")) {
+						if (currentRoll.equals("Razorback"))
+						{
 							roll = roll + 10;
 						}
-						if(currentRoll.equals("Snouter")) {
+						if (currentRoll.equals("Snouter"))
+						{
 							roll = roll + 20;
 						}
-						if(currentRoll.equals("Leaning Jowler")) {
+						if (currentRoll.equals("Leaning Jowler"))
+						{
 							roll = roll + 30;
 						}
 					}
 					// add the previous roll and the current roll to the temporary total
 					// unless it's a sider, then just leave the 1 out
-					if(roll == 1) {
+					if (roll == 1)
+					{
 						tempScore = tempScore + firstRoll;
-					} else {
+					}
+					else
+					{
 						tempScore = tempScore + firstRoll + roll;
 					}
 					// set text
@@ -110,30 +148,36 @@ public class pigstally implements Serializable {
 					// reset values
 					firstRoll = 0;
 				}
-			} else {
+			}
+			else
+			{
 				// This is the first roll
 				firstRollString = currentRoll;
 				firstRoll = roll;
 				secondRollString = "ready";
 			}
-		} else {
+		}
+		else
+		{
 			// Allow the user to bank the current running tally
-			if(currentRoll.contentEquals("Bank It")) {
+			if (currentRoll.contentEquals("Bank It"))
+			{
 				bankScore = bankScore + tempScore;
 				tempScore = 0;
 				firstRollString = "ready";
 				secondRollString = "ready";
 			}
 			// Pigs touching is total loss of current tally and all banked total
-			if(currentRoll.contentEquals("Total Loss (Pigs touching)")) {
+			if (currentRoll.contentEquals("Total Loss (Pigs touching)"))
+			{
 				tempScore = 0;
 				bankScore = 0;
 				firstRollString = "ready";
 				secondRollString = "ready";
 			}
 		}
-		//tvScoreThusFar.setText("Score thus far: " + tempScore);
-		//tvScore.setText("Bank Score: " + bankScore);
+		// tvScoreThusFar.setText("Score thus far: " + tempScore);
+		// tvScore.setText("Bank Score: " + bankScore);
 		return true;
 	}
 }
