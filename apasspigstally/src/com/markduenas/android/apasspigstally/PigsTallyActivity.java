@@ -32,7 +32,7 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 	Button msg;
 	TableLayout tl1;
 	private pigstally tally1 = new pigstally();
-	final static List<pigstally> listPigsTally = new ArrayList<pigstally>();
+	private static List<pigstally> listPigsTally = new ArrayList<pigstally>();
 	private static long current_id = 0;
 	private static long next_id = 0;
 	private static long previous_id = 0;
