@@ -299,11 +299,23 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 		msg = getButtonMessage(view, msg);
 		String currentRoll = msg.trim();
 		tally1.roll(currentRoll);
-		setUIValues(tally1, (LinearLayout) updateView);
-		if (tally1.isPigout() == true)
-			toastMsg("Pigout!!!", 3000);
 		dbHelper.updateSingleDatabaseRow(pigstally.class, tally1);
+
+		// update the UI
+		setUIValues(tally1, (LinearLayout) updateView);
+		// check for pig out
+		if (tally1.isPigout() == true)
+		{
+			toastMsg("Pigout!!!", 3000);
+			animateNextPlayer();
+		}
+
 		if (msg.equals("Bank It") && listPigsTally.size() > 1)
+		{
+			animateNextPlayer();
+		}
+
+		if (msg.equals("Total Loss (Pigs touching)"))
 		{
 			animateNextPlayer();
 		}
