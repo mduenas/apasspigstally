@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.markduenas.android.PigsTallyActivity"
-      android:versionName="1.0" android:versionCode="8">
+      package="com.markduenas.android.apasspigstally"
+      android:versionName="1.0" android:versionCode="9">
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
-	    <activity android:name="com.markduenas.android.apasspigstally.PigsTallyActivity"
+	    <activity android:name="com.markduenas.android.apasspigstally.PassPigsActivity"
 	              android:label="@string/app_name">
 	        <intent-filter>
 	            <action android:name="android.intent.action.MAIN" />

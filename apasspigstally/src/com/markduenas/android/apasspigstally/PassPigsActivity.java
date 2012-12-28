@@ -23,12 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.markduenas.android.PigsTallyActivity.R;
 import com.markduenas.android.apasspigstally.db.CommonUtils;
 import com.markduenas.android.apasspigstally.db.GenericDBHelper;
 import com.markduenas.android.apasspigstally.db.pigstally;
 
-public class PigsTallyActivity extends Activity implements View.OnClickListener
+public class PassPigsActivity extends Activity implements View.OnClickListener
 {
 
 	// The constants for the two menu items

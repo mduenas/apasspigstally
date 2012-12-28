@@ -7,8 +7,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ViewFlipper;
 
-import com.markduenas.android.PigsTallyActivity.R;
-
 public class MyGestureDetector extends SimpleOnGestureListener
 {
 	// viewFlipper and animations
@@ -53,7 +51,7 @@ public class MyGestureDetector extends SimpleOnGestureListener
 						viewFlipper.setInAnimation(slideLeftIn);
 						viewFlipper.setOutAnimation(slideLeftOut);
 						viewFlipper.showNext();
-						((PigsTallyActivity) appContext).setNextPiggy();
+						((PassPigsActivity) appContext).setNextPiggy();
 					}
 					else
 					{
@@ -68,7 +66,7 @@ public class MyGestureDetector extends SimpleOnGestureListener
 						viewFlipper.setInAnimation(slideRightIn);
 						viewFlipper.setOutAnimation(slideRightOut);
 						viewFlipper.showPrevious();
-						((PigsTallyActivity) appContext).setPreviousPiggy();
+						((PassPigsActivity) appContext).setPreviousPiggy();
 					}
 					else
 					{
@@ -86,11 +84,11 @@ public class MyGestureDetector extends SimpleOnGestureListener
 
 	private boolean canFlipLeft()
 	{
-		return ((PigsTallyActivity) appContext).canFlipLeft();
+		return ((PassPigsActivity) appContext).canFlipLeft();
 	}
 
 	private boolean canFlipRight()
 	{
-		return ((PigsTallyActivity) appContext).canFlipRight();
+		return ((PassPigsActivity) appContext).canFlipRight();
 	}
 }
