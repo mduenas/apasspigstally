@@ -2,18 +2,35 @@ package com.markduenas.android.apasspigstally;
 
 import java.io.Serializable;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable
 public class pigstally implements Serializable
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@DatabaseField
 	private int tempScore;
+	@DatabaseField
 	private int bankScore;
+	@DatabaseField
 	private int firstRoll;
+	@DatabaseField
 	private String firstRollString;
+	@DatabaseField
 	private String secondRollString;
+	@DatabaseField
 	private boolean pigout;
+	@DatabaseField
+	private CharSequence playerName;
+
+	public pigstally(String name)
+	{
+		this.playerName = name;
+	}
 
 	public boolean isPigout()
 	{
@@ -179,5 +196,15 @@ public class pigstally implements Serializable
 		// tvScoreThusFar.setText("Score thus far: " + tempScore);
 		// tvScore.setText("Bank Score: " + bankScore);
 		return true;
+	}
+
+	public void setPlayerName(CharSequence name)
+	{
+		this.playerName = name;
+	}
+
+	public CharSequence getPlayerName()
+	{
+		return playerName;
 	}
 }
