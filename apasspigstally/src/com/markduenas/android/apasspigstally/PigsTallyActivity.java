@@ -14,15 +14,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.markduenas.android.PigsTallyActivity.R;
+import com.markduenas.android.apasspigstally.db.CommonUtils;
+import com.markduenas.android.apasspigstally.db.GenericDBHelper;
+import com.markduenas.android.apasspigstally.db.pigstally;
 
 public class PigsTallyActivity extends Activity implements View.OnClickListener
 {
@@ -56,15 +60,16 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 	TextView tvScoreThusFar3;
 	TextView tvPlayerName3;
 	Button msg;
-	TableLayout tl1;
 	private static List<pigstally> listPigsTally = new ArrayList<pigstally>();
-	private static int current_id = -1;
-	private static int next_id = -1;
-	private static int previous_id = -1;
 
-	LinearLayout pageCurrent;
-	LinearLayout pagePrevious;
-	LinearLayout pageNext;
+	private static int index_1 = -1;
+	private static int index_2 = -1;
+	private static int index_3 = -1;
+
+	LinearLayout viewOne;
+	LinearLayout viewTwo;
+	LinearLayout viewThree;
+	ViewFlipper viewFlipper;
 
 	private GenericDBHelper dbHelper;
 
@@ -79,60 +84,60 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 		setContentView(R.layout.main);
 
 		// Set up the linear layout views
-		pagePrevious = (LinearLayout) findViewById(R.id.llViewFlip01);
-		pageCurrent = (LinearLayout) findViewById(R.id.llViewFlip02);
-		pageNext = (LinearLayout) findViewById(R.id.llViewFlip03);
+		viewOne = (LinearLayout) findViewById(R.id.llViewFlip01);
+		viewTwo = (LinearLayout) findViewById(R.id.llViewFlip02);
+		viewThree = (LinearLayout) findViewById(R.id.llViewFlip03);
 
 		// Set up the text views
-		tvPig1Label1 = (TextView) pagePrevious.findViewById(R.id.tvPig1Label);
-		tvPig2Label1 = (TextView) pagePrevious.findViewById(R.id.tvPig2Label);
-		tvScoreThusFar1 = (TextView) pagePrevious.findViewById(R.id.tvScoreThusfarLabel);
-		tvScore1 = (TextView) pagePrevious.findViewById(R.id.tvScore);
-		tvPlayerName1 = (TextView) pagePrevious.findViewById(R.id.tvPlayerName);
+		tvPig1Label1 = (TextView) viewTwo.findViewById(R.id.tvPig1Label);
+		tvPig2Label1 = (TextView) viewTwo.findViewById(R.id.tvPig2Label);
+		tvScoreThusFar1 = (TextView) viewTwo.findViewById(R.id.tvScoreThusfarLabel);
+		tvScore1 = (TextView) viewTwo.findViewById(R.id.tvScore);
+		tvPlayerName1 = (TextView) viewTwo.findViewById(R.id.tvPlayerName);
 		// set up the text views
-		tvPig1Label2 = (TextView) pageCurrent.findViewById(R.id.tvPig1Label);
-		tvPig2Label2 = (TextView) pageCurrent.findViewById(R.id.tvPig2Label);
-		tvScoreThusFar2 = (TextView) pageCurrent.findViewById(R.id.tvScoreThusfarLabel);
-		tvScore2 = (TextView) pageCurrent.findViewById(R.id.tvScore);
-		tvPlayerName2 = (TextView) pageCurrent.findViewById(R.id.tvPlayerName);
+		tvPig1Label2 = (TextView) viewOne.findViewById(R.id.tvPig1Label);
+		tvPig2Label2 = (TextView) viewOne.findViewById(R.id.tvPig2Label);
+		tvScoreThusFar2 = (TextView) viewOne.findViewById(R.id.tvScoreThusfarLabel);
+		tvScore2 = (TextView) viewOne.findViewById(R.id.tvScore);
+		tvPlayerName2 = (TextView) viewOne.findViewById(R.id.tvPlayerName);
 		// set up the text views
-		tvPig1Label3 = (TextView) pageNext.findViewById(R.id.tvPig1Label);
-		tvPig2Label3 = (TextView) pageNext.findViewById(R.id.tvPig2Label);
-		tvScoreThusFar3 = (TextView) pageNext.findViewById(R.id.tvScoreThusfarLabel);
-		tvScore3 = (TextView) pageNext.findViewById(R.id.tvScore);
-		tvPlayerName3 = (TextView) pageNext.findViewById(R.id.tvPlayerName);
+		tvPig1Label3 = (TextView) viewThree.findViewById(R.id.tvPig1Label);
+		tvPig2Label3 = (TextView) viewThree.findViewById(R.id.tvPig2Label);
+		tvScoreThusFar3 = (TextView) viewThree.findViewById(R.id.tvScoreThusfarLabel);
+		tvScore3 = (TextView) viewThree.findViewById(R.id.tvScore);
+		tvPlayerName3 = (TextView) viewThree.findViewById(R.id.tvPlayerName);
 
 		// Set up the buttons
-		setButtonListener(pagePrevious, R.id.buttonSider);
-		setButtonListener(pagePrevious, R.id.buttonSiderDot);
-		setButtonListener(pagePrevious, R.id.buttonSnouter);
-		setButtonListener(pagePrevious, R.id.buttonRazorback);
-		setButtonListener(pagePrevious, R.id.buttonLeaningJowler);
-		setButtonListener(pagePrevious, R.id.buttonTrotter);
-		setButtonListener(pagePrevious, R.id.buttonBankIt);
-		setButtonListener(pagePrevious, R.id.buttonTotalLoss);
+		setButtonListener(viewTwo, R.id.buttonSider);
+		setButtonListener(viewTwo, R.id.buttonSiderDot);
+		setButtonListener(viewTwo, R.id.buttonSnouter);
+		setButtonListener(viewTwo, R.id.buttonRazorback);
+		setButtonListener(viewTwo, R.id.buttonLeaningJowler);
+		setButtonListener(viewTwo, R.id.buttonTrotter);
+		setButtonListener(viewTwo, R.id.buttonBankIt);
+		setButtonListener(viewTwo, R.id.buttonTotalLoss);
 		// Set up the buttons
-		setButtonListener(pageCurrent, R.id.buttonSider);
-		setButtonListener(pageCurrent, R.id.buttonSiderDot);
-		setButtonListener(pageCurrent, R.id.buttonSnouter);
-		setButtonListener(pageCurrent, R.id.buttonRazorback);
-		setButtonListener(pageCurrent, R.id.buttonLeaningJowler);
-		setButtonListener(pageCurrent, R.id.buttonTrotter);
-		setButtonListener(pageCurrent, R.id.buttonBankIt);
-		setButtonListener(pageCurrent, R.id.buttonTotalLoss);
+		setButtonListener(viewOne, R.id.buttonSider);
+		setButtonListener(viewOne, R.id.buttonSiderDot);
+		setButtonListener(viewOne, R.id.buttonSnouter);
+		setButtonListener(viewOne, R.id.buttonRazorback);
+		setButtonListener(viewOne, R.id.buttonLeaningJowler);
+		setButtonListener(viewOne, R.id.buttonTrotter);
+		setButtonListener(viewOne, R.id.buttonBankIt);
+		setButtonListener(viewOne, R.id.buttonTotalLoss);
 		// Set up the buttons
-		setButtonListener(pageNext, R.id.buttonSider);
-		setButtonListener(pageNext, R.id.buttonSiderDot);
-		setButtonListener(pageNext, R.id.buttonSnouter);
-		setButtonListener(pageNext, R.id.buttonRazorback);
-		setButtonListener(pageNext, R.id.buttonLeaningJowler);
-		setButtonListener(pageNext, R.id.buttonTrotter);
-		setButtonListener(pageNext, R.id.buttonBankIt);
-		setButtonListener(pageNext, R.id.buttonTotalLoss);
+		setButtonListener(viewThree, R.id.buttonSider);
+		setButtonListener(viewThree, R.id.buttonSiderDot);
+		setButtonListener(viewThree, R.id.buttonSnouter);
+		setButtonListener(viewThree, R.id.buttonRazorback);
+		setButtonListener(viewThree, R.id.buttonLeaningJowler);
+		setButtonListener(viewThree, R.id.buttonTrotter);
+		setButtonListener(viewThree, R.id.buttonBankIt);
+		setButtonListener(viewThree, R.id.buttonTotalLoss);
 
 		// now listen for gestures
-		ViewFlipper viewFlip = (ViewFlipper) findViewById(R.id.viewFlipper);
-		gestureDetector = new GestureDetector(new MyGestureDetector(this, viewFlip));
+		viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
+		gestureDetector = new GestureDetector(new MyGestureDetector(this, viewFlipper));
 		gestureListener = new View.OnTouchListener()
 		{
 			public boolean onTouch(View v, MotionEvent event)
@@ -148,7 +153,7 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 		if (savedInstanceState != null)
 			onRestoreInstanceState(savedInstanceState);
 
-		dbHelper = new ScanDBHelper(getBaseContext());
+		dbHelper = GenericDBHelper.createInstance(getBaseContext(), "PigsTally", 1);
 
 		refreshViews();
 	}
@@ -156,29 +161,59 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 	private void refreshViews()
 	{
 		listPigsTally = getPlayers();
-		current_id = 0;
-		setUIValues(listPigsTally.get(0), pageCurrent);
-		if (listPigsTally.size() > 1)
+		if (listPigsTally.size() > 0)
 		{
-			setUIValues(listPigsTally.get(1), pageNext);
+			index_1 = 0;
+			if (listPigsTally.size() == 1)
+			{
+				index_2 = -1;
+				index_3 = -1;
+			}
+			else if (listPigsTally.size() == 2)
+			{
+				index_2 = 1;
+				index_3 = 0;
+			}
+			else if (listPigsTally.size() > 2)
+			{
+				index_2 = 1;
+				index_3 = 2;
+			}
 		}
+		else
+		{
+			pigstally newTally = new pigstally("Player1");
+			dbHelper.create(pigstally.class, newTally);
+			index_1 = 0;
+			listPigsTally = getPlayers();
+		}
+		loadAllViews();
+		Log.v("refreshViews", String.format("child %d", viewFlipper.getDisplayedChild()));
 	}
 
 	private void refreshViewsNewPlayer()
 	{
 		listPigsTally = getPlayers();
-		current_id = listPigsTally.size() - 1;
-		setUIValues(listPigsTally.get(current_id), pageCurrent);
-		if (listPigsTally.size() > 1)
+		int viewIndex = viewFlipper.getDisplayedChild();
+		if (viewIndex == 0)
 		{
-			previous_id = current_id - 1;
-			setUIValues(listPigsTally.get(previous_id), pagePrevious);
-			if (previous_id != 0)
-			{
-				next_id = 0;
-				setUIValues(listPigsTally.get(next_id), pageNext);
-			}
+			index_1 = listPigsTally.size() - 1;
+			index_2 = 0;
+			index_3 = 1;
 		}
+		if (viewIndex == 1)
+		{
+			index_2 = listPigsTally.size() - 1;
+			index_1 = index_2 - 1;
+			index_3 = 0;
+		}
+		if (viewIndex == 2)
+		{
+			index_3 = listPigsTally.size() - 1;
+			index_1 = 0;
+			index_2 = 1;
+		}
+		loadAllViews();
 	}
 
 	private List<pigstally> getPlayers()
@@ -187,8 +222,6 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 		if (list == null)
 		{
 			list = new ArrayList<pigstally>();
-			list.add(new pigstally("Player1"));
-			dbHelper.create(pigstally.class, list.get(0));
 		}
 		return list;
 	}
@@ -206,15 +239,16 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 	public void onSaveInstanceState(Bundle savedInstanceState)
 	{
 		super.onSaveInstanceState(savedInstanceState);
+
 		// Save UI state changes to the savedInstanceState.
 		// This bundle will be passed to onCreate if the process is
 		// killed and restarted.
-		if (previous_id > -1)
-			savedInstanceState.putSerializable("tallyPrevious", listPigsTally.get(previous_id));
-		if (current_id > -1)
-			savedInstanceState.putSerializable("tallyCurrent", listPigsTally.get(current_id));
-		if (next_id > -1)
-			savedInstanceState.putSerializable("tallyNext", listPigsTally.get(next_id));
+		if (index_1 > -1)
+			savedInstanceState.putSerializable("tallyPrevious", listPigsTally.get(index_1));
+		if (index_2 > -1)
+			savedInstanceState.putSerializable("tallyCurrent", listPigsTally.get(index_2));
+		if (index_3 > -1)
+			savedInstanceState.putSerializable("tallyNext", listPigsTally.get(index_3));
 	}
 
 	@Override
@@ -227,11 +261,11 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 		pigstally tallyCurrent = (pigstally) savedInstanceState.getSerializable("tallyCurrent");
 		pigstally tallyNext = (pigstally) savedInstanceState.getSerializable("tallyNext");
 		if (tallyPrevious != null)
-			setUIValues(tallyPrevious, pagePrevious);
+			setUIValues(tallyPrevious, viewOne);
 		if (tallyCurrent != null)
-			setUIValues(tallyCurrent, pageCurrent);
+			setUIValues(tallyCurrent, viewTwo);
 		if (tallyNext != null)
-			setUIValues(tallyNext, pageCurrent);
+			setUIValues(tallyNext, viewThree);
 	}
 
 	/**
@@ -257,14 +291,50 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 	 */
 	public void onClick(View view)
 	{
-		pigstally tally1 = listPigsTally.get(current_id);
+		View updateView = viewFlipper.getCurrentView();
+		int viewIndex = viewFlipper.getDisplayedChild();
+		int index = getIndexValue(viewIndex);
+		pigstally tally1 = listPigsTally.get(index);
 		String msg = "default msg";
 		msg = getButtonMessage(view, msg);
 		String currentRoll = msg.trim();
 		tally1.roll(currentRoll);
-		setUIValues(tally1, pageCurrent);
+		setUIValues(tally1, (LinearLayout) updateView);
 		if (tally1.isPigout() == true)
 			toastMsg("Pigout!!!", 3000);
+		dbHelper.updateSingleDatabaseRow(pigstally.class, tally1);
+		if (msg.equals("Bank It") && listPigsTally.size() > 1)
+		{
+			animateNextPlayer();
+		}
+	}
+
+	private void animateNextPlayer()
+	{
+		Animation slideLeftIn = AnimationUtils.loadAnimation(getBaseContext(), R.anim.slide_left_in);
+		Animation slideLeftOut = AnimationUtils.loadAnimation(getBaseContext(), R.anim.slide_left_out);
+		viewFlipper.setInAnimation(slideLeftIn);
+		viewFlipper.setOutAnimation(slideLeftOut);
+		viewFlipper.showNext();
+		setNextPiggy();
+	}
+
+	private int getIndexValue(int viewIndex)
+	{
+		int index = 0;
+		switch (viewIndex)
+		{
+		case 0:
+			index = index_1;
+			break;
+		case 1:
+			index = index_2;
+			break;
+		case 2:
+			index = index_3;
+			break;
+		}
+		return index;
 	}
 
 	/**
@@ -283,7 +353,7 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 		tvPig2Label.setText("Pig2: " + tally1.getSecondRoll());
 		tvScoreThusFar.setText("Score thus far: " + tally1.getTempScore());
 		tvScore.setText("Bank Score: " + tally1.getBankScore());
-		tvPlayerName.setText(tally1.getPlayerName());
+		tvPlayerName.setText("Player: " + tally1.getPlayerName());
 	}
 
 	/**
@@ -329,25 +399,61 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 	 */
 	public void setNextPiggy()
 	{
-		Log.v("setNextPiggy", String.format("setNextPiggy before current_id is: %d", current_id));
+		Log.v("setNextPiggy", String.format("setNextPiggy before: %d %d %d", index_1, index_2, index_3));
 		if (listPigsTally.size() == 1)
 		{
-			current_id = 0;
-			next_id = -1;
-			previous_id = -1;
+			index_2 = 0;
+			index_3 = -1;
+			index_1 = -1;
 			return;
 		}
-		previous_id++;
-		current_id++;
-		next_id++;
+		if (listPigsTally.size() == 2)
+		{
+			// on the last view invert the values
+			if (viewFlipper.getDisplayedChild() == 0)
+			{
+				if (index_1 == 0)
+					index_1 = 1;
+				else
+					index_1 = 0;
 
-		if (next_id > listPigsTally.size() - 1)
-			next_id = 0;
-		if (current_id > listPigsTally.size() - 1)
-			current_id = 0;
-		if (previous_id > listPigsTally.size() - 1)
-			previous_id = 0;
-		Log.v("setNextPiggy", String.format("setNextPiggy after current_id is: %d", current_id));
+				if (index_2 == 0)
+					index_2 = 1;
+				else
+					index_2 = 0;
+
+				if (index_3 == 0)
+					index_3 = 1;
+				else
+					index_3 = 0;
+			}
+			loadAllViews();
+			return;
+		}
+		index_1++;
+		index_2++;
+		index_3++;
+
+		if (index_3 > listPigsTally.size() - 1)
+			index_3 = 0;
+		if (index_2 > listPigsTally.size() - 1)
+			index_2 = 0;
+		if (index_1 > listPigsTally.size() - 1)
+			index_1 = 0;
+		Log.v("setNextPiggy", String.format("setNextPiggy after: %d %d %d", index_1, index_2, index_3));
+		loadAllViews();
+	}
+
+	private void loadAllViews()
+	{
+		if (index_1 > -1)
+			setUIValues(listPigsTally.get(index_1), viewOne);
+
+		if (index_2 > -1)
+			setUIValues(listPigsTally.get(index_2), viewTwo);
+
+		if (index_3 > -1)
+			setUIValues(listPigsTally.get(index_3), viewThree);
 	}
 
 	/**
@@ -355,17 +461,50 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 	 */
 	public void setPreviousPiggy()
 	{
-		Log.v("setPreviousPiggy", String.format("setPreviousPiggy before current_id is: %d", current_id));
-		current_id--;
-		next_id--;
-		previous_id--;
-		if (previous_id < 0)
-			previous_id = listPigsTally.size() - 1;
-		if (current_id < 0)
-			current_id = listPigsTally.size() - 1;
-		if (next_id < 0)
-			next_id = listPigsTally.size() - 1;
-		Log.v("setPreviousPiggy", String.format("setPreviousPiggy after current_id is: %d", current_id));
+		Log.v("setPreviousPiggy", String.format("setPreviousPiggy before: %d %d %d", index_1, index_2, index_3));
+		if (listPigsTally.size() == 1)
+		{
+			index_1 = 0;
+			index_2 = -1;
+			index_3 = -1;
+			return;
+		}
+		if (listPigsTally.size() == 2)
+		{
+			int index = viewFlipper.getDisplayedChild();
+			Log.v("setPreviousPiggy", String.format("child %d", index));
+			if (index == 2)
+			{
+				if (index_1 == 0)
+					index_1 = 1;
+				else
+					index_1 = 0;
+
+				if (index_2 == 0)
+					index_2 = 1;
+				else
+					index_2 = 0;
+
+				if (index_3 == 0)
+					index_3 = 1;
+				else
+					index_3 = 0;
+			}
+			Log.v("setPreviousPiggy", String.format("setPreviousPiggy after: %d %d %d", index_1, index_2, index_3));
+			loadAllViews();
+			return;
+		}
+		index_1--;
+		index_2--;
+		index_3--;
+		if (index_1 < 0)
+			index_1 = listPigsTally.size() - 1;
+		if (index_2 < 0)
+			index_2 = listPigsTally.size() - 1;
+		if (index_3 < 0)
+			index_3 = listPigsTally.size() - 1;
+		Log.v("setPreviousPiggy", String.format("setPreviousPiggy after: %d %d %d", index_1, index_2, index_3));
+		loadAllViews();
 	}
 
 	/**
@@ -375,7 +514,7 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 	 */
 	public boolean canFlipLeft()
 	{
-		return (previous_id > -1);
+		return listPigsTally.size() > 1;
 	}
 
 	/**
@@ -385,7 +524,7 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 	 */
 	public boolean canFlipRight()
 	{
-		return (next_id > -1);
+		return listPigsTally.size() > 1;
 	}
 
 	@Override
@@ -419,7 +558,7 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 		case DELETE_ID:
 			try
 			{
-				deletePiggyPlayer(current_id);
+				deletePiggyPlayer(viewFlipper.getDisplayedChild());
 			}
 			catch (Exception e)
 			{
@@ -434,9 +573,11 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 		return (super.onOptionsItemSelected(item));
 	}
 
-	private void deletePiggyPlayer(int current)
+	private void deletePiggyPlayer(int viewIndex)
 	{
-		dbHelper.delete(pigstally.class, listPigsTally.get(current));
+		int index = getIndexValue(viewIndex);
+		dbHelper.delete(pigstally.class, listPigsTally.get(index));
+		refreshViews();
 	}
 
 	private void addPiggyPlayer()
@@ -447,7 +588,7 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 		// Set up the input
 		final EditText input = new EditText(this);
 		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		input.setInputType(InputType.TYPE_CLASS_TEXT);
 		builder.setView(input);
 
 		// Set up the buttons
@@ -460,7 +601,7 @@ public class PigsTallyActivity extends Activity implements View.OnClickListener
 				if (playerName != null && playerName.length() > 0)
 					dbHelper.create(pigstally.class, new pigstally(playerName));
 				else
-					dbHelper.create(pigstally.class, new pigstally(String.format("Player%d", current_id + 1)));
+					dbHelper.create(pigstally.class, new pigstally(String.format("Player%d", index_2 + 1)));
 				refreshViewsNewPlayer();
 			}
 		});

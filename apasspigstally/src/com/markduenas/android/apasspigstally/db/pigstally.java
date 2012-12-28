@@ -1,4 +1,4 @@
-package com.markduenas.android.apasspigstally;
+package com.markduenas.android.apasspigstally.db;
 
 import java.io.Serializable;
 
@@ -12,6 +12,8 @@ public class pigstally implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@DatabaseField(generatedId = true)
+	private int id;
 	@DatabaseField
 	private int tempScore;
 	@DatabaseField
@@ -25,7 +27,12 @@ public class pigstally implements Serializable
 	@DatabaseField
 	private boolean pigout;
 	@DatabaseField
-	private CharSequence playerName;
+	private String playerName;
+
+	public pigstally()
+	{
+		this.playerName = "Player1";
+	}
 
 	public pigstally(String name)
 	{
@@ -198,7 +205,7 @@ public class pigstally implements Serializable
 		return true;
 	}
 
-	public void setPlayerName(CharSequence name)
+	public void setPlayerName(String name)
 	{
 		this.playerName = name;
 	}

@@ -1,4 +1,4 @@
-package com.markduenas.android.apasspigstally;
+package com.markduenas.android.apasspigstally.db;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -44,6 +44,11 @@ public class GenericDBHelper extends OrmLiteSqliteOpenHelper
 	// list of tables that are managed by this helper
 	protected List<Class<?>> tableList = new ArrayList<Class<?>>();
 
+	public static GenericDBHelper createInstance(Context context, String applicationType, int databaseVersion)
+	{
+		return new ScanDBHelper(context, createDatabaseName(applicationType), databaseVersion);
+	}
+
 	// centralized location for databasename
 	public static String createDatabaseName(String appName)
 	{
@@ -61,7 +66,6 @@ public class GenericDBHelper extends OrmLiteSqliteOpenHelper
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
 		// Initalize list of classes/tables to be stored in this database in the subclass
-		tableList.add(pigstally.class);
 
 	}
 
@@ -249,7 +253,7 @@ public class GenericDBHelper extends OrmLiteSqliteOpenHelper
 		return data;
 	}
 
-	public <T> List<T> getDatabaseListFilteredNoAppId(Class<T> annotationType, String columnName, String value)
+	public <T> List<T> getDatabaseListFiltered(Class<T> annotationType, String columnName, String value)
 	{
 		List<T> data = null;
 		try
@@ -257,29 +261,6 @@ public class GenericDBHelper extends OrmLiteSqliteOpenHelper
 			Dao<T, Integer> ssDao = getObjectDao(annotationType);
 			QueryBuilder<T, Integer> queryBuilder = ssDao.queryBuilder();
 			Where<T, Integer> where = queryBuilder.where();
-			where.eq(columnName, value);
-			PreparedQuery<T> preparedQuery = queryBuilder.prepare();
-			data = ssDao.query(preparedQuery);
-		}
-		catch (SQLException e)
-		{
-			CommonUtils.logStackTrace(e);
-			// checkMissingTable(annotationType, e);
-		}
-
-		return data;
-	}
-
-	public <T> List<T> getDatabaseListFiltered(int appId, Class<T> annotationType, String columnName, String value)
-	{
-		List<T> data = null;
-		try
-		{
-			Dao<T, Integer> ssDao = getObjectDao(annotationType);
-			QueryBuilder<T, Integer> queryBuilder = ssDao.queryBuilder();
-			Where<T, Integer> where = queryBuilder.where();
-			where.eq(DB_FOREIGN_APPID, appId);
-			where.and();
 			where.eq(columnName, value);
 			PreparedQuery<T> preparedQuery = queryBuilder.prepare();
 			data = ssDao.query(preparedQuery);
@@ -424,7 +405,7 @@ public class GenericDBHelper extends OrmLiteSqliteOpenHelper
 			return null;
 	}
 
-	public <T> T insertSingleDatabaseRow(Class<T> annotationType, T updateItem, int applicationId)
+	public <T> T insertSingleDatabaseRow(Class<T> annotationType, T updateItem)
 	{
 		Dao<T, Integer> ssDao = null;
 		try
@@ -463,7 +444,7 @@ public class GenericDBHelper extends OrmLiteSqliteOpenHelper
 		return true;
 	}
 
-	public <T> boolean insertListDatabaseRow(Class<T> annotationType, List<T> listUpdateItem, int applicationId)
+	public <T> boolean insertListDatabaseRow(Class<T> annotationType, List<T> listUpdateItem)
 	{
 		Dao<T, Integer> ssDao = null;
 		try

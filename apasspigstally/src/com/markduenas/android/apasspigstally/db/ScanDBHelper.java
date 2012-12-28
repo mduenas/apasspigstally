@@ -1,4 +1,5 @@
-package com.markduenas.android.apasspigstally;
+package com.markduenas.android.apasspigstally.db;
+
 
 import android.content.Context;
 

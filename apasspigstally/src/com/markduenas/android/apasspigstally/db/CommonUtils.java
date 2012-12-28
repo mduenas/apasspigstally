@@ -1,4 +1,4 @@
-package com.markduenas.android.apasspigstally;
+package com.markduenas.android.apasspigstally.db;
 
 import java.io.IOException;
 import java.io.InputStream;

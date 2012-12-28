@@ -1,4 +1,4 @@
-package com.markduenas.android.apasspigstally;
+package com.markduenas.android.apasspigstally.db;
 
 import java.sql.SQLException;
 
@@ -21,7 +21,7 @@ public class GenericDBUpgradeHelper
 			//
 			// dbHelper.queryRaw(queryraw.class, "ALTER TABLE BuildingIDData ADD COLUMN realinspectionid INT;");
 			// dbHelper.queryRaw(queryraw.class, "ALTER TABLE BuildingIDData ADD COLUMN inspectionnote VARCHAR;");
-			dbHelper.queryRaw(pigstally.class, "select * from BuildingIDData;");
+			dbHelper.queryRaw(pigstally.class, "select * from pigstally;");
 		}
 		catch (SQLException e)
 		{
